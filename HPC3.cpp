@@ -1,64 +1,73 @@
-#include <iostream>
-//#include <vector>
+#include<bits/stdc++.h>
 #include <omp.h>
-#include <climits>
 using namespace std;
-void min_reduction(int arr[], int n) {
-  int min_value = INT_MAX;
-  #pragma omp parallel for reduction(min: min_value)
-  for (int i = 0; i < n; i++) {
-	if (arr[i] < min_value) {
-  	min_value = arr[i];
-	}
-  }
-  cout << "Minimum value: " << min_value << endl;
+
+
+void findMax(int* arr, int n){
+
+    int maxValue = INT_MIN;
+    #pragma omp parallel for reduction(max: maxValue);
+    for(int i = 0; i < n; i++){
+        if(maxValue < arr[i]){
+            maxValue = arr[i];
+        }
+    }
+    cout<<"\n Maximum ->  "<<maxValue;
 }
 
-void max_reduction(int arr[], int n) {
-  int max_value = INT_MIN;
-  #pragma omp parallel for reduction(max: max_value)
-  for (int i = 0; i < n; i++) {
-	if (arr[i] > max_value) {
-  	max_value = arr[i];
-	}
-  }
-  cout << "Maximum value: " << max_value << endl;
+
+void findMin(int* arr, int n){
+    int minValue = INT_MAX;
+    #pragma omp parallel for reduction(min: minValue);
+    for(int i = 0; i < n; i++){
+        if(minValue < arr[i]){
+            minValue = arr[i];
+        }
+    }
+    cout<<"\n Minimum ->  "<<minValue;
 }
 
-void sum_reduction(int arr[], int n) {
-  int sum = 0;
-   #pragma omp parallel for reduction(+: sum)
-   for (int i = 0; i < n; i++) {
-	sum += arr[i];
-  }
-  cout << "Sum: " << sum << endl;
-}
 
-void average_reduction(int arr[], int n) {
-  int sum = 0;
-  #pragma omp parallel for reduction(+: sum)
-  for (int i = 0; i < n; i++) {
-	sum += arr[i];
-  }
-  cout << "Average: " << (double)sum / (n-1) << endl;
-}
 
-int main() {
-    int *arr,n;
-    cout<<"\n enter total no of elements=>";
-    cin>>n;
-    arr=new int[n];
-    cout<<"\n enter elements=>";
-    for(int i=0;i<n;i++)
+void findSum(int* arr, int n){
+    int sum = 0;
+    #pragma omp parallel for reduction(+: sum);
+    for (int i = 0; i < n; i++)
     {
-   	 cin>>arr[i];
+        sum += arr[i];
+    }
+    cout<<"\n Sum ->  "<< sum;
+}
+
+void findAvg(int* arr, int n){
+    int sum = 0;
+    double avg = 0;
+    #pragma omp parallel for reduction(+: sum);
+    for (int i = 0; i < n; i++)
+    {
+        sum += arr[i];
     }
 
-//   int arr[] = {5, 2, 9, 1, 7, 6, 8, 3, 4};
-//   int n = size(arr);
+    avg = sum/n;
+    cout<<"\n Average ->  "<< avg;
+}
 
-  min_reduction(arr, n);
-  max_reduction(arr, n);
-  sum_reduction(arr, n);
-  average_reduction(arr, n);
+int main(){
+    int n; 
+    cout<<"Enter total num to insert in array";
+    cin>> n;
+
+    int* arr = new int [n];
+
+    for (int i = 0; i < n; i++)
+    {
+        cin>>arr[i];
+    }
+
+
+    findMax(arr, n);
+    findMin(arr,n);
+    findAvg(arr,n);
+    findSum(arr, n);
+
 }
